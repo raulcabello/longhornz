@@ -985,7 +985,7 @@ spec:
     spec:
       containers:
       - name: longhorn-manager
-        image: raulcabm/longhorn-manager:s390x
+        image: rancherlabs/longhornonz-longhorn-manager:v1.2.3-rc6-s390x
         imagePullPolicy: IfNotPresent
         securityContext:
           privileged: true
@@ -994,15 +994,15 @@ spec:
         - -d
         - daemon
         - --engine-image
-        - raulcabm/longhorn-engine:s390x
+        - rancherlabs/longhornonz-longhorn-engine:v1.2.3-rc3-s390x
         - --instance-manager-image
-        - raulcabm/longhorn-instance-manager:s390x
+        - rancherlabs/longhornonz-longhorn-instance-manager:v1_20211210-rc1-s390x
         - --share-manager-image
-        - raulcabm/longhorn-share-manager:s390x
+        - rancherlabs/longhornonz-longhorn-share-manager:v1_20211020-rc0-s390x
         - --backing-image-manager-image
-        - raulcabm/backing-image-manager:v2_20211203-s390x
+        - rancherlabs/longhornonz-backing-image-manager:v2_20210820-rc4-s390x
         - --manager-image
-        - raulcabm/longhorn-manager:s390x
+        - rancherlabs/longhornonz-longhorn-manager:v1.2.3-rc6-s390x
         - --service-account
         - longhorn-service-account
         ports:
@@ -1102,7 +1102,7 @@ spec:
     spec:
       containers:
       - name: longhorn-ui
-        image: raulcabm/longhorn-ui:s390x
+        image: rancherlabs/longhornonz-longhorn-ui:v1.2.3-rc0-s390x
         imagePullPolicy: IfNotPresent
         securityContext:
           runAsUser: 0
@@ -1158,18 +1158,18 @@ spec:
     spec:
       initContainers:
         - name: wait-longhorn-manager
-          image: raulcabm/longhorn-manager:s390x
+          image: rancherlabs/longhornonz-longhorn-manager:v1.2.3-rc6-s390x
           command: ['sh', '-c', 'while [ $(curl -m 1 -s -o /dev/null -w "%{http_code}" http://longhorn-backend:9500/v1) != "200" ]; do echo waiting; sleep 2; done']
       containers:
         - name: longhorn-driver-deployer
-          image: raulcabm/longhorn-manager:s390x
+          image: rancherlabs/longhornonz-longhorn-manager:v1.2.3-rc6-s390x
           imagePullPolicy: IfNotPresent
           command:
           - longhorn-manager
           - -d
           - deploy-driver
           - --manager-image
-          - raulcabm/longhorn-manager:s390x
+          - rancherlabs/longhornonz-longhorn-manager:v1.2.3-rc6-s390x
           - --manager-url
           - http://longhorn-backend:9500/v1
           env:
@@ -1191,15 +1191,15 @@ spec:
           # For AirGap Installation
           # Replace PREFIX with your private registry
           - name: CSI_ATTACHER_IMAGE
-            value: raulcabm/csi-attacher:v3.2.1-s390x
+            value: rancher/mirrored-longhornio-csi-attacher:v3.2.1-s390x
           - name: CSI_PROVISIONER_IMAGE
-            value: raulcabm/csi-provisioner:v2.1.2-s390x
+            value: rancher/mirrored-longhornio-csi-provisioner:v2.1.2-s390x
           - name: CSI_NODE_DRIVER_REGISTRAR_IMAGE
-            value: raulcabm/csi-node-driver-registrar:v2.3.0-s390x
+            value: rancher/mirrored-longhornio-csi-node-driver-registrar:v2.3.0-s390x
           - name: CSI_RESIZER_IMAGE
-            value: raulcabm/csi-resizer:v1.2.0-s390x
+            value: rancher/mirrored-longhornio-csi-resizer:v1.2.0-s390x
           - name: CSI_SNAPSHOTTER_IMAGE
-            value: raulcabm/csi-snapshotter:v3.0.3-s390x
+            value: rancher/mirrored-longhornio-csi-snapshotter:v3.0.3-s390x
           # Manually specify number of CSI attacher replicas
           #- name: CSI_ATTACHER_REPLICA_COUNT
           #  value: "3"
